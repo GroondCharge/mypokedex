@@ -7,6 +7,19 @@ import (
 	"strings"
 )
 
+var commands = map[string]cliCommand{
+	"exit": {
+		name:        "exit",
+		description: "Exit the Pokedex",
+		callback:    commandExit,
+	},
+	"help": {
+		name:        "help",
+		description: "Prints list of commands",
+		callback:    commandHelp,
+	},
+}
+
 func main() {
 
 	for {
@@ -17,7 +30,13 @@ func main() {
 		if !checker {
 			fmt.Printf("No more commands were given")
 		}
-		fmt.Printf("Your command was: %s\n", strings.Fields(strings.ToLower(scanner.Text()))[0])
+		keyword := strings.Fields(strings.ToLower(scanner.Text()))[0]
+		command, ok := commands[keyword]
+		if !ok {
+			fmt.Printf("command was not found")
+			continue
+		}
+		command.callback()
 
 	}
 }
