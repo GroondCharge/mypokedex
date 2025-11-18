@@ -21,6 +21,7 @@ var commands = map[string]cliCommand{
 }
 
 func main() {
+	testing_api()
 
 	for {
 		fmt.Print("Pokedex >")
