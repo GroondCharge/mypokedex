@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"pokedex/pokeapi"
 	"strings"
 )
 
@@ -18,11 +19,17 @@ var commands = map[string]cliCommand{
 		description: "Prints list of commands",
 		callback:    commandHelp,
 	},
+	"map": {
+		name:        "map",
+		description: "Provides a list of location-area points",
+		callback:    commandMap,
+	},
 }
 
 func main() {
-	testing_api()
 
+	config := pokeapi.Config{}
+	config_pointer := &config
 	for {
 		fmt.Print("Pokedex >")
 		reader := bufio.NewReader(os.Stdin)
@@ -37,7 +44,7 @@ func main() {
 			fmt.Printf("command was not found")
 			continue
 		}
-		command.callback()
+		command.callback(config_pointer)
 
 	}
 }
