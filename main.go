@@ -24,6 +24,11 @@ var commands = map[string]cliCommand{
 		description: "Provides a list of location-area points",
 		callback:    commandMap,
 	},
+	"mapb": {
+		name:        "mapb",
+		description: "Provides a list of location-area points on previous page",
+		callback:    commandMapb,
+	},
 }
 
 func main() {
@@ -37,6 +42,7 @@ func main() {
 		checker := scanner.Scan()
 		if !checker {
 			fmt.Printf("No more commands were given")
+			break
 		}
 		keyword := strings.Fields(strings.ToLower(scanner.Text()))[0]
 		command, ok := commands[keyword]
@@ -44,7 +50,13 @@ func main() {
 			fmt.Printf("command was not found")
 			continue
 		}
-		command.callback(config_pointer)
+		err := command.callback(config_pointer)
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		//continue
+		//keyword := strings.Fields(strings.ToLower(scanner.Text()))[0]
 
 	}
 }

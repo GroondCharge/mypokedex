@@ -23,16 +23,33 @@ func commandHelp(config *pokeapi.Config) error {
 	return nil
 }
 func commandMap(config *pokeapi.Config) error {
+	var err error
 	if config.Next == "" {
-		pokeapi.Populate_config("https://pokeapi.co/api/v2/location-area/", config)
+		if config.Previous == "" {
+			err = pokeapi.Populate_config("https://pokeapi.co/api/v2/location-area/", config)
+		} else {
+			return fmt.Errorf("you're on final page")
+		}
 	} else {
-		pokeapi.Populate_config(config.Next, config)
+		err = pokeapi.Populate_config(config.Next, config)
+
 	}
 	//fmt.Print(config.Next)
 	//fmt.Print(config.Previous)
-	return nil
+	return err
 }
+func commandMapb(config *pokeapi.Config) error {
+	var err error
+	if config.Previous == "" {
+		return fmt.Errorf("you're on first page")
+	} else {
+		err = pokeapi.Populate_config(config.Previous, config)
 
+	}
+	//fmt.Print(config.Next)
+	//fmt.Print(config.Previous)
+	return err
+}
 func cleanInput(text string) []string {
 	words := strings.Fields(strings.ToLower(text))
 	return words
