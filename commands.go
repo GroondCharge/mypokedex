@@ -6,29 +6,6 @@ import (
 	"os"
 )
 
-var commands = map[string]cliCommand{
-	"exit": {
-		name:        "exit",
-		description: "Exit the Pokedex",
-		callback:    commandExit,
-	},
-	"help": {
-		name:        "help",
-		description: "Prints list of commands",
-		callback:    commandHelp,
-	},
-	"map": {
-		name:        "map",
-		description: "Provides a list of location-area points",
-		callback:    commandMap,
-	},
-	"mapb": {
-		name:        "mapb",
-		description: "Provides a list of location-area points on previous page",
-		callback:    commandMapb,
-	},
-}
-
 func commandExit(config *Config) error {
 	fmt.Printf("Closing the Pokedex... Goodbye!\n")
 	os.Exit(0)
