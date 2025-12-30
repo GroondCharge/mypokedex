@@ -10,6 +10,7 @@ type cacheEntry struct {
 	val       []byte
 }
 type Cache struct {
-	cahceEntries map[string]cacheEntry
+	cacheEntries map[string]cacheEntry
 	mu           sync.Mutex
+	interval     time.Duration
 }
