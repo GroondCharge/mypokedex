@@ -14,7 +14,10 @@ func commandExit(config *Config, args ...string) error {
 	return nil
 }
 func commandHelp(config *Config, args ...string) error {
-	fmt.Printf("Welcome to the Pokedex!\nUsage:\n\nhelp: Displays a help message\nexit: Exit the Pokedex\n")
+	commandList := getCommands()
+	for _, command := range commandList {
+		fmt.Printf("- %s: %s\n", command.name, command.description)
+	}
 	return nil
 }
 func commandMap(config *Config, args ...string) error {
