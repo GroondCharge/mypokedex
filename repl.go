@@ -12,6 +12,7 @@ type Config struct {
 	pokeapiClient pokeapi.Client
 	Next          *string
 	Previous      *string
+	Invetory      map[string]pokeapi.PokemonStruct
 }
 
 func startRepl(cfg *Config) {
@@ -26,7 +27,7 @@ func startRepl(cfg *Config) {
 		commandName := words[0]
 		command, ok := getCommands()[commandName]
 		if ok {
-			err := command.callback(cfg)
+			err := command.callback(cfg, words[1:]...)
 			if err != nil {
 				fmt.Println(err)
 			}
@@ -45,7 +46,7 @@ func cleanInput(text string) []string {
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(*Config) error
+	callback    func(*Config, ...string) error
 }
 
 func getCommands() map[string]cliCommand {
@@ -69,6 +70,16 @@ func getCommands() map[string]cliCommand {
 			name:        "mapb",
 			description: "Provides a list of location-area points on previous page",
 			callback:    commandMapb,
+		},
+		"explore": {
+			name:        "explore",
+			description: "Lists Pokemon found in a location area",
+			callback:    commandExplore,
+		},
+		"catch": {
+			name:        "catch",
+			description: "Used for catching pokemon",
+			callback:    commandCatch,
 		},
 	}
 }

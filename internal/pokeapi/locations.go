@@ -7,6 +7,51 @@ import (
 	"net/http"
 )
 
+func (c *Client) GetLocationArea(areaName string) (LocationArea, error) {
+	url := baseURL + "location-area/" + areaName
+
+	// Check cache first
+	if data, ok := c.cache.Get(url); ok {
+		fmt.Println("Found in cache!")
+		locationArea := LocationArea{}
+		err := json.Unmarshal(data, &locationArea)
+		if err != nil {
+			return LocationArea{}, err
+		}
+		return locationArea, nil
+	}
+	fmt.Println("Not found in Cache - fetching data")
+
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return LocationArea{}, err
+	}
+	response, err := c.httpClient.Do(req)
+	if err != nil {
+		return LocationArea{}, err
+	}
+	defer response.Body.Close()
+
+	if response.StatusCode == http.StatusNotFound {
+		return LocationArea{}, fmt.Errorf("location area '%s' not found", areaName)
+	}
+
+	data, err := io.ReadAll(response.Body)
+	if err != nil {
+		return LocationArea{}, err
+	}
+
+	// Add to cache
+	c.cache.Add(url, data)
+
+	locationArea := LocationArea{}
+	err = json.Unmarshal(data, &locationArea)
+	if err != nil {
+		return LocationArea{}, err
+	}
+	return locationArea, nil
+}
+
 func (c *Client) ListLocations(pageURL *string) (ResponseLocations, error) {
 	url := baseURL + "/location-area"
 	if pageURL != nil {
