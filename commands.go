@@ -92,3 +92,23 @@ func commandCatch(config *Config, args ...string) error {
 	}
 	return nil
 }
+
+func commandInspect(config *Config, args ...string) error {
+	if len(args) == 0 {
+		return errors.New("provide a name of the pokemon")
+	}
+	if pokemon, ok := config.Invetory[args[0]]; ok {
+		fmt.Printf("Name: %s\nHeight: %d\nWeight: %d\n", pokemon.Name, pokemon.Height, pokemon.Weight)
+		fmt.Printf("Stats:\n")
+		for _, stat := range pokemon.Stats {
+			fmt.Printf("- %s: %d\n", stat.Stat.Name, stat.BaseStat)
+		}
+		fmt.Printf("Types:\n")
+		for _, eachType := range pokemon.Types {
+			fmt.Printf("- %s\n", eachType.Type.Name)
+		}
+	} else {
+		return fmt.Errorf("You haven't caught this Pokemon yet")
+	}
+	return nil
+}
