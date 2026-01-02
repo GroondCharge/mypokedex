@@ -1,4 +1,4 @@
-#Pokedex
+# Pokedex
 
 This is a pokedex app, inspired by guided project on a learning platform
 
