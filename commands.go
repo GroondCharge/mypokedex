@@ -112,3 +112,18 @@ func commandInspect(config *Config, args ...string) error {
 	}
 	return nil
 }
+
+func commandPokedex(config *Config, args ...string) error {
+	if len(args) != 0 {
+		return errors.New("Pokedex command doesnt take arguments")
+	}
+	if len(config.Invetory) == 0 {
+		fmt.Printf("Your Pokedex is empty\n")
+		return nil
+	}
+	fmt.Printf("Your Pokedex:\n")
+	for _, pokemon := range config.Invetory {
+		fmt.Printf("- %s\n", pokemon.Name)
+	}
+	return nil
+}
